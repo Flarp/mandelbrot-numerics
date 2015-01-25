@@ -75,3 +75,22 @@ extern int m_d_box_period_get_period(const m_d_box_period *box) {
   }
   return box->p;
 }
+
+extern int m_d_box_period_do(complex double center, double radius, int maxperiod) {
+  m_d_box_period *box = m_d_box_period_new(center, radius);
+  if (! box) {
+    return 0;
+  }
+  int period = 0;
+  for (int i = 0; i < maxperiod; ++i) {
+    if (m_d_box_period_have_period(box)) {
+      period = m_d_box_period_get_period(box);
+      break;
+    }
+    if (! m_d_box_period_step(box)) {
+      break;
+    }
+  }
+  m_d_box_period_delete(box);
+  return period;
+}

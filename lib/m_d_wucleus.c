@@ -1,7 +1,7 @@
 #include <mandelbrot-numerics.h>
 #include "m_d_util.h"
 
-extern m_newton m_d_wucleus(complex double *z, complex double z_guess, complex double c, int period) {
+extern m_newton m_d_wucleus_step(complex double *z, complex double z_guess, complex double c, int period) {
   complex double zz = z_guess;
   complex double dzz = 1;
   for (int i = 0; i < period; ++i) {
@@ -25,4 +25,16 @@ extern m_newton m_d_wucleus(complex double *z, complex double z_guess, complex d
     *z = z_guess;
     return m_failed;
   }
+}
+
+extern m_newton m_d_wucleus(complex double *z_out, complex double z_guess, complex double c, int period, int maxsteps) {
+  m_newton result = m_failed;
+  complex double z = z_guess;
+  for (int i = 0; i < maxsteps; ++i) {
+    if (m_stepped != (result = m_d_wucleus_step(&z, z, c, period))) {
+      break;
+    }
+  }
+  *z_out = z;
+  return result;
 }

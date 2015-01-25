@@ -86,3 +86,18 @@ extern complex double m_d_exray_in_get(const m_d_exray_in *ray) {
   }
   return ray->c;
 }
+
+extern complex double m_d_exray_in_do(const mpq_t angle, int sharpness, int maxsteps) {
+  m_d_exray_in *ray = m_d_exray_in_new(angle, sharpness);
+  if (! ray) {
+    return 0;
+  }
+  for (int i = 0; i < maxsteps; ++i) {
+    if (m_stepped != m_d_exray_in_step(ray)) {
+      break;
+    }
+  }
+  complex double endpoint = m_d_exray_in_get(ray);
+  m_d_exray_in_delete(ray);
+  return endpoint;
+}

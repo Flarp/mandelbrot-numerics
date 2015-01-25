@@ -1,7 +1,7 @@
 #include <mandelbrot-numerics.h>
 #include "m_d_util.h"
 
-extern m_newton m_d_interior(complex double *z_out, complex double *c_out, complex double z_guess, complex double c_guess, complex double interior, int period) {
+extern m_newton m_d_interior_step(complex double *z_out, complex double *c_out, complex double z_guess, complex double c_guess, complex double interior, int period) {
   complex double c = c_guess;
   complex double z = z_guess;
   complex double dz = 1;
@@ -31,4 +31,18 @@ extern m_newton m_d_interior(complex double *z_out, complex double *c_out, compl
     *c_out = c_guess;
     return m_failed;
   }
+}
+
+extern m_newton m_d_interior(complex double *z_out, complex double *c_out, complex double z_guess, complex double c_guess, complex double interior, int period, int maxsteps) {
+  m_newton result = m_failed;
+  complex double z = z_guess;
+  complex double c = c_guess;
+  for (int i = 0; i < maxsteps; ++i) {
+    if (m_stepped != (result = m_d_interior_step(&z, &c, z, c, interior, period))) {
+      break;
+    }
+  }
+  *z_out = z;
+  *c_out = c;
+  return result;
 }

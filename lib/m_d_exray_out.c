@@ -161,3 +161,27 @@ extern complex double m_d_exray_out_get(const m_d_exray_out *ray) {
   }
   return ray->c;
 }
+
+extern char *m_d_exray_out_do(complex double c, int sharpness, int maxdwell) {
+  m_d_exray_out *ray = m_d_exray_out_new(c, sharpness, maxdwell);
+  if (! ray) {
+    return 0;
+  }
+  char *bits = malloc(maxdwell + 2);
+  if (! bits) {
+    m_d_exray_out_delete(ray);
+    return 0;
+  }
+  int n = 0;
+  while (n <= maxdwell) {
+    if (m_d_exray_out_have_bit(ray)) {
+      bits[n++] = '0' + m_d_exray_out_get_bit(ray);
+    }
+    if (m_stepped != m_d_exray_out_step(ray)) {
+      break;
+    }
+  }
+  bits[n] = 0;
+  m_d_exray_out_delete(ray);
+  return bits;
+}
