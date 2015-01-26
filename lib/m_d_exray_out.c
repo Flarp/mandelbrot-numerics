@@ -101,6 +101,7 @@ extern m_newton m_d_exray_out_step(m_d_exray_out *ray) {
     complex double c[2] = { ray->c, ray->c };
     complex double z[2] = { 0, 0 };
     double d2[2];
+    double e2[2];
     for (int i = 0; i < 64; ++i) { // FIXME arbitrary limit
       z[0] = 0;
       z[1] = 0;
@@ -114,10 +115,11 @@ extern m_newton m_d_exray_out_step(m_d_exray_out *ray) {
       complex double c_new[2];
       for (int w = 0; w < 2; ++w) {
         c_new[w] = c[w] - (z[w] - k[w]) / dc[w];
-        d2[w] = cabs2(c_new[w] - c[w]);
+        e2[w] = cabs2(c_new[w] - c[w]);
+        d2[w] = cabs2(c_new[w] - ray->c);
         c[w] = c_new[w];
       }
-      if (! (d2[0] > epsilon2 && d2[1] > epsilon2)) {
+      if (! (e2[0] > epsilon2 && e2[1] > epsilon2)) {
         break;
       }
     }
@@ -126,6 +128,7 @@ extern m_newton m_d_exray_out_step(m_d_exray_out *ray) {
       ray->bit = 0;
       ray->c = c[0];
       ray->z = z[0];
+      ray->n = m;
       ray->d = dwell(ray->loger2, m, cabs2(z[0]));
       return m_stepped;
     }
@@ -134,6 +137,7 @@ extern m_newton m_d_exray_out_step(m_d_exray_out *ray) {
       ray->bit = 1;
       ray->c = c[1];
       ray->z = z[1];
+      ray->n = m;
       ray->d = dwell(ray->loger2, m, cabs2(z[1]));
       return m_stepped;
     }
