@@ -13,7 +13,7 @@ $(LIBRARY).a: $(OBJECTS)
 	@echo "A       $@" ; ar -rs $@ $^ || ( echo "ERROR   ar -rs $@ $^" && false )
 
 $(LIBRARY).so: $(OBJECTS)
-	@echo "SO      $@" ; $(LINK) -o $@ $^ -lmpc -lmpfr -lgmp -lm || ( echo "ERROR   $(LINK) -o $@ $< -lmpc -lmpfr -lgmp -lm" && false )
+	@echo "SO      $@" ; $(LINK) -o $@ $^ -lmpc -lmpfr -lgmp -lm || ( echo "ERROR   $(LINK) -o $@ $^ -lmpc -lmpfr -lgmp -lm" && false )
 
 %.o: %.c
 	@echo "O       $@" ; $(COMPILE) -o $@ $< || ( echo "ERROR   $(COMPILE) -o $@ $<" && false )
