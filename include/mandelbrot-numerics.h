@@ -24,6 +24,8 @@ typedef enum m_newton m_newton;
 
 extern m_newton m_d_nucleus_step(complex double *c, complex double c_guess, int period);
 extern m_newton m_d_nucleus(complex double *c, complex double c_guess, int period, int maxsteps);
+extern m_newton m_d_misiurewicz_naive_step(complex double *c_out, complex double c_guess, int preperiod, int period);
+extern m_newton m_d_misiurewicz_naive(complex double *c_out, complex double c_guess, int preperiod, int period, int mxsteps);
 extern m_newton m_d_misiurewicz_step(complex double *c_out, complex double c_guess, int preperiod, int period);
 extern m_newton m_d_misiurewicz(complex double *c_out, complex double c_guess, int preperiod, int period, int mxsteps);
 extern m_newton m_d_wucleus_step(complex double *z, complex double z_guess, complex double c, int period);
