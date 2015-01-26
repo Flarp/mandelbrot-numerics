@@ -8,6 +8,7 @@ bin/m-domain-size
 bin/m-exray-in
 bin/m-exray-out
 bin/m-interior
+bin/m-misiurewicz
 bin/m-nucleus
 bin/m-parent
 bin/m-shape
