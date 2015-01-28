@@ -14,3 +14,6 @@ bin/m-parent
 bin/m-shape
 bin/m-size
 bin/m-wucleus
+.cabal-sandbox
+cabal.sandbox.config
+dist
