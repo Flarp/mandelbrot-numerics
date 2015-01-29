@@ -37,8 +37,20 @@ library
     FlexibleContexts
   build-depends:
     base   >=4.7 && <4.9,
+    safe   >=0.3 && <0.4,
     strict >=0.3 && <0.4
   hs-source-dirs:      hs/lib
+  default-language:    Haskell2010
+  ghc-options:         -Wall
+  ghc-prof-options:    -prof -auto-all -caf-all
+
+test-suite mandelbrot-numerics-tests
+  type:                exitcode-stdio-1.0
+  main-is:             hs/test/mandelbrot-numerics-tests.hs
+  build-depends:
+    base       >=4.7 && <4.9,
+    QuickCheck >=2.7 && <2.8,
+    mandelbrot-numerics
   default-language:    Haskell2010
   ghc-options:         -Wall
 

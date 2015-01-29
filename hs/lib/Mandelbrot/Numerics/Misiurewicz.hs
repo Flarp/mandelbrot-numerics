@@ -16,11 +16,12 @@ import Data.Strict.Tuple
 import Mandelbrot.Numerics.Complex
 
 misiurewiczNaive
-  :: (RealFloat r, Square r, Square (Complex r))
+  :: (RealFloat r, Square r, Square (Complex r), Approx r, Approx (Complex r))
   => Int -> Int -> Complex r -> [Complex r]
+{-# SPECIALIZE misiurewiczNaive :: Int -> Int -> Complex Double -> [Complex Double] #-}
 misiurewiczNaive pp p c0
-  | pp < 1 || p < 1 || notFiniteC c0 = []
-  | otherwise = go 0 0 0 0 0
+  | pp > 0 && p > 0 && finite c0 = go 0 0 0 0 0
+  | otherwise = []
   where
     go i !zp !dcp !z !dc
       | i == pp + p = c' : misiurewiczNaive pp p c'
@@ -30,11 +31,12 @@ misiurewiczNaive pp p c0
         c' = c0 - (z - zp) / (dc - dcp)
 
 misiurewicz
-  :: (RealFloat r, Square r, Square (Complex r))
+  :: (RealFloat r, Square r, Square (Complex r), Approx r, Approx (Complex r))
   => Int -> Int -> Complex r -> [Complex r]
+{-# SPECIALIZE misiurewicz :: Int -> Int -> Complex Double -> [Complex Double] #-}
 misiurewicz pp p c0
-  | pp < 1 || p < 1 || notFiniteC c0 = []
-  | otherwise = go 0 [] 0 0
+  | pp > 0 && p > 0 && finite c0 = go 0 [] 0 0
+  | otherwise = []
   where
     go i !ps !z !dc
       | i == pp + p = c' : misiurewicz pp p c'

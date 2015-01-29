@@ -11,10 +11,11 @@ data Shape = Cardioid | Circle
   deriving (Eq, Ord, Enum, Bounded, Read, Show)
 
 shape
-  :: (RealFloat r, Square r, Square (Complex r))
+  :: (RealFloat r, Square r, Square (Complex r), Approx r, Approx (Complex r))
   => Int -> Complex r -> Maybe Shape
+{-# SPECIALIZE shape :: Int -> Complex Double -> Maybe Shape #-}
 shape p c
-  | p < 1 || notFiniteC e = Nothing
+  | p < 1 || notFinite e = Nothing
   | magnitudeSquared e < magnitudeSquared (e - 1) = Just Cardioid
   | otherwise = Just Circle
   where

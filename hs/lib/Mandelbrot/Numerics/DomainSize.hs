@@ -9,6 +9,7 @@ import Mandelbrot.Numerics.Complex
 domainSize
   :: (RealFloat r, Square r, Square (Complex r))
   => Int -> Complex r -> r
+{-# SPECIALIZE domainSize :: Int -> Complex Double -> Double #-}
 domainSize p c = go 1 (magnitudeSquared c) c 1
   where
     go q !zq2 !z !dc

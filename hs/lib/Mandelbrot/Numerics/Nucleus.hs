@@ -7,13 +7,14 @@ module Mandelbrot.Numerics.Nucleus
 import Mandelbrot.Numerics.Complex
 
 nucleus
-  :: (RealFloat r, Square r, Square (Complex r))
+  :: (RealFloat r, Square r, Square (Complex r), Approx r, Approx (Complex r))
   => Int -> Complex r -> [Complex r]
+{-# SPECIALIZE nucleus :: Int -> Complex Double -> [Complex Double] #-}
 nucleus !p !c0
-  | p < 1 || notFiniteC c0 = []
-  | otherwise = go 0 0 0
+  | p > 0 && finite c0 = go 0 0 0
+  | otherwise = []
   where
-    go i z dc
+    go !i !z !dc
       | i == p = c' : nucleus p c'
       | otherwise = go (i + 1) (sqr z + c0) (double (z * dc) + 1)
       where

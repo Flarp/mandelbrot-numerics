@@ -31,7 +31,7 @@ surroundsOrigin a b c d
   $ zipWith crossesPositiveRealAxis [a,b,c,d] [b,c,d,a]
 
 boxPeriod
-  :: (RealFloat r, Square r, Square (Complex r))
+  :: (RealFloat r, Square r, Square (Complex r), Approx r, Approx (Complex r))
   => Complex r -> r -> Progress Int
 boxPeriod c r = go 1 c0 c1 c2 c3
   where
@@ -41,10 +41,10 @@ boxPeriod c r = go 1 c0 c1 c2 c3
     c2 = c + (r  :+ r )
     c3 = c + (r' :+ r )
     go !p z0 z1 z2 z3
-      | notFiniteC z0 = Failed p
-      | notFiniteC z1 = Failed p
-      | notFiniteC z2 = Failed p
-      | notFiniteC z3 = Failed p
+      | notFinite z0 = Failed p
+      | notFinite z1 = Failed p
+      | notFinite z2 = Failed p
+      | notFinite z3 = Failed p
       | surroundsOrigin z0 z1 z2 z3 = Done p
       | otherwise = Continue p $
           go (p + 1) (sqr z0 + c0) (sqr z1 + c1) (sqr z2 + c2) (sqr z3 + c3)

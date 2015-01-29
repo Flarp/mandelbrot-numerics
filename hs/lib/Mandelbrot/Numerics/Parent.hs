@@ -25,28 +25,32 @@ data Parent r
   deriving (Eq, Read, Show)
 
 parent
-  :: (RealFloat r, Square r, Square (Complex r))
+  :: (RealFloat r, Square r, Square (Complex r), Approx r, Approx (Complex r))
   => Int -> Complex r -> Maybe (Parent r)
+{-# SPECIALIZE parent :: Int -> Complex Double -> Maybe (Parent Double) #-}
 parent p c0 = case shape p c0 of
   Nothing -> Nothing
-  Just Cardioid -> case interior' p 1 c0 c0 of
+  Just Cardioid -> case converge 2 64 $ interior p 1 c0 c0 of
     Nothing -> Nothing
     Just (_:!:r) -> Just (NoParent r)
-  Just Circle -> case internalRay [] (1/128) (1/64) c0 c0 of
-    Just ((_:!:root1):(_:!:root0):_) -> go (double root1 - root0) 1 (1/0) 0
+  Just Circle -> case converge 2 64 $ interior p ((k-3)/k) c0 c0 of
+    Just (z1:!:c1) -> case converge 2 64 $ interior p ((k-1)/k) z1 c1 of
+      Just (_:!:c2) -> go (double c2 - c1) 1 (1/0) 0
+      _ -> Nothing
     _ -> Nothing
     where
+      k = 32
       go c1 q zq z
         | q >= p = Nothing
-        | zq' < zq && p `mod` q == 0 = case wucleus' q c1 z' of
+        | zq' < zq && p `mod` q == 0 = case converge 2 64 $ wucleus q c1 z' of
             Just z1 -> case zdz q c1 z1 1 of
               (_:!:dz1) | magnitudeSquared dz1 <= 1 ->
                 let den = p `div` q
                     num = round (fromIntegral den * phase dz1 / (2 * pi)) `mod` den
                     t = toInteger num % toInteger den
                     i = cis (2 * pi * fromRational t)
-                in  case nucleus' q c1 of
-                      Just c2 -> case interior' q i c2 c2 of
+                in  case converge 2 64 $ nucleus q c1 of
+                      Just c2 -> case converge 2 64 $ interior q i c2 c2 of
                         Just (_:!:c3) -> Just $ Parent c3 t q c2
                         _ -> Nothing
                       _ -> Nothing
@@ -58,26 +62,14 @@ parent p c0 = case shape p c0 of
           z' = sqr z + c1
           zq' = magnitudeSquared z'
   where
-    internalRay acc r inc !z !c
-      | magnitudeSquared r >= 1 = Just acc
-      | otherwise = case interior' p r z c of
-          Just zc@(z':!:c') -> internalRay (zc:acc) (r + inc) inc z' c'
-          _ -> Nothing
-    nucleus' q c = converge $ nucleus q c
-    wucleus' q c z = converge $ wucleus q c z
-    interior' q i z c = converge2 $ interior q i z c
-    converge = lastMay . filter finiteC . take 64
-    converge2 = lastMay . filter finiteC2 . take 64
-    finiteC2 (a:!:b) = finiteC a && finiteC b
-    lastMay [] = Nothing
-    lastMay xs = Just (last xs)
     zdz q c !z !dz
       | q == 0 = z :!: dz
       | otherwise = zdz (q - 1) c (sqr z + c) (double (z * dz))
 
 parents
-  :: (RealFloat r, Square r, Square (Complex r))
+  :: (RealFloat r, Square r, Square (Complex r), Approx r, Approx (Complex r))
   => Int -> Complex r -> [Parent r]
+{-# SPECIALIZE parents :: Int -> Complex Double -> [Parent Double] #-}
 parents p c = case parent p c of
   Nothing -> []
   Just q@(NoParent _) -> [q]
