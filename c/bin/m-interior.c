@@ -38,7 +38,7 @@ extern int main(int argc, char **argv) {
     complex double z = 0;
     complex double c = 0;
     m_d_interior(&z, &c, zre + I * zim, cre + I * cim, ir * cexp(I * twopi * it), period, maxsteps);
-    printf("%.18e %.18e %.18e %.18e\n", creal(z), cimag(z), creal(c), cimag(c));
+    printf("%.16e %.16e %.16e %.16e\n", creal(z), cimag(z), creal(c), cimag(c));
     return 0;
   } else {
     fprintf(stderr, "non-double precision not supported yet\n");

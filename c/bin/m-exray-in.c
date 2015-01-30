@@ -31,7 +31,7 @@ extern int main(int argc, char **argv) {
     int retval = 0;
     for (int i = 0; i < maxsteps; ++i) {
       complex double c = m_d_exray_in_get(ray);
-      printf("%.18e %.18e\n", creal(c), cimag(c));
+      printf("%.16e %.16e\n", creal(c), cimag(c));
       if (m_stepped != m_d_exray_in_step(ray)) {
         retval = 1;
         break;

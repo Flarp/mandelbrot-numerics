@@ -26,7 +26,7 @@ extern int main(int argc, char **argv) {
     if (! arg_double(argv[3], &nim)) { return 1; }
     if (! arg_int(argv[4], &period)) { return 1; }
     complex double size = m_d_size(nre + I * nim, period);
-    printf("%.18e %.18e\n", cabs(size), carg(size));
+    printf("%.16e %.16e\n", cabs(size), carg(size));
     return 0;
   } else {
     fprintf(stderr, "non-double precision not supported yet\n");

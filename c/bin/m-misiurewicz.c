@@ -31,7 +31,7 @@ extern int main(int argc, char **argv) {
     if (! arg_int(argv[6], &maxsteps)) { return 1; }
     complex double c = 0;
     m_d_misiurewicz(&c, cre + I * cim, preperiod, period, maxsteps);
-    printf("%.18e %.18e\n", creal(c), cimag(c));
+    printf("%.16e %.16e\n", creal(c), cimag(c));
     return 0;
   } else {
     fprintf(stderr, "non-double precision not supported yet\n");

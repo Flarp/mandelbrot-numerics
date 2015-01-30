@@ -41,7 +41,7 @@ extern int main(int argc, char **argv) {
     int n = 0;
     do {
       complex double c = m_d_exray_out_get(ray);
-      printf("%.18e %.18e", creal(c), cimag(c));
+      printf("%.16e %.16e", creal(c), cimag(c));
       if (m_d_exray_out_have_bit(ray)) {
         int bit = m_d_exray_out_get_bit(ray);
         bits[n++] = '0' + bit;

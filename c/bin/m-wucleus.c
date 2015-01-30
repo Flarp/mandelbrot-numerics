@@ -33,7 +33,7 @@ extern int main(int argc, char **argv) {
     if (! arg_int(argv[7], &maxsteps)) { return 1; }
     complex double z = 0;
     m_d_wucleus(&z, zre + I * zim, cre + I * cim, period, maxsteps);
-    printf("%.18e %.18e\n", creal(z), cimag(z));
+    printf("%.16e %.16e\n", creal(z), cimag(z));
     return 0;
   } else {
     fprintf(stderr, "non-double precision not supported yet\n");

@@ -26,10 +26,8 @@ extern int main(int argc, char **argv) {
     if (! arg_double(argv[3], &nim)) { return 1; }
     if (! arg_int(argv[4], &period)) { return 1; }
     double size = m_d_domain_size(nre + I * nim, period);
-    if (size > 0) {
-      printf("%.18e\n", size);
-      return 0;
-    }
+    printf("%.16e\n", size);
+    return 0;
   } else {
     fprintf(stderr, "non-double precision not supported yet\n");
   }
