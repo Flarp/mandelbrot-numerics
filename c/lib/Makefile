@@ -1,5 +1,5 @@
-COMPILE := gcc -std=c99 -Wall -Wextra -pedantic -fPIC -O3 -pipe -MMD -I../include -c
-LINK    := gcc -shared
+COMPILE := gcc -std=c99 -Wall -Wextra -pedantic -fPIC -O3 -pipe -ggdb -MMD -I../include -c
+LINK    := gcc -shared -ggdb
 LIBRARY := libmandelbrot-numerics
 OBJECTS := $(patsubst %.c,%.o,$(wildcard *.c))
 DEPENDS := $(patsubst %.o,%.d,$(OBJECTS))
@@ -8,6 +8,12 @@ all: $(LIBRARY).a $(LIBRARY).so pkgconfig/mandelbrot-numerics.pc
 
 clean:
 	@echo "CLEAN" ; rm -f $(OBJECTS) $(DEPENDS) $(LIBRARY).a $(LIBRARY).so pkgconfig/mandelbrot-numerics.pc
+
+install: $(LIBRARY).a $(LIBRARY).so ../include/mandelbrot-numerics.h pkgconfig/mandelbrot-numerics.pc
+	install -d "$(prefix)/include" "$(prefix)/lib" "$(prefix)/lib/pkgconfig"
+	install -m 644 -t "$(prefix)/include" ../include/mandelbrot-numerics.h
+	install -m 644 -t "$(prefix)/lib" $(LIBRARY).a $(LIBRARY).so
+	install -m 644 -t "$(prefix)/lib/pkgconfig" pkgconfig/mandelbrot-numerics.pc
 
 $(LIBRARY).a: $(OBJECTS)
 	@echo "A       $@" ; ar -rs $@ $^ || ( echo "ERROR   ar -rs $@ $^" && false )
@@ -19,9 +25,9 @@ $(LIBRARY).so: $(OBJECTS)
 	@echo "O       $@" ; $(COMPILE) -o $@ $< || ( echo "ERROR   $(COMPILE) -o $@ $<" && false )
 
 pkgconfig/mandelbrot-numerics.pc: pkgconfig/mandelbrot-numerics.pc.in
-	@echo "PC      $@" ; ( echo "prefix=`cd .. ; pwd`" ; cat pkgconfig/mandelbrot-numerics.pc.in ) > pkgconfig/mandelbrot-numerics.pc || ( echo 'ERROR    ( echo "prefix=`cd .. ; pwd`" ; cat pkgconfig/mandelbrot-numerics.pc.in ) > pkgconfig/mandelbrot-numerics.pc' && false )
+	@echo "PC      $@" ; ( echo "prefix=$(prefix)" ; cat pkgconfig/mandelbrot-numerics.pc.in ) > pkgconfig/mandelbrot-numerics.pc || ( echo 'ERROR    ( echo "prefix=$(prefix)" ; cat pkgconfig/mandelbrot-numerics.pc.in ) > pkgconfig/mandelbrot-numerics.pc' && false )
 
 .SUFFIXES:
-.PHONY: all clean
+.PHONY: all clean install
 
 -include $(DEPENDS)
