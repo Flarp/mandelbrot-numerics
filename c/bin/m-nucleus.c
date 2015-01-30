@@ -32,7 +32,20 @@ extern int main(int argc, char **argv) {
     printf("%.16e %.16e\n", creal(c), cimag(c));
     return 0;
   } else {
-    fprintf(stderr, "non-double precision not supported yet\n");
+    mpc_t c_guess;
+    int period = 0;
+    int maxsteps = 0;
+    mpc_init2(c_guess, bits);
+    if (! arg_mpc(argv[2], argv[3], c_guess)) { return 1; }
+    if (! arg_int(argv[4], &period)) { return 1; }
+    if (! arg_int(argv[5], &maxsteps)) { return 1; }
+    mpc_t c_out;
+    mpc_init2(c_out, bits);
+    m_r_nucleus(c_out, c_guess, period, maxsteps);
+    mpfr_printf("%Re %Re\n", mpc_realref(c_out), mpc_imagref(c_out));
+    mpc_clear(c_out);
+    mpc_clear(c_guess);
+    return 0;
   }
   return 1;
 }

@@ -16,9 +16,10 @@ static inline bool arg_precision(const char *arg, bool *native, int *bits) {
     errno = 0;
     long int li = strtol(arg, &check, 10);
     bool valid = ! errno && arg != check && ! *check;
-    if (valid && li > 0) {
+    int i = li;
+    if (valid && i > 1) {
       *native = false;
-      *bits = li;
+      *bits = i;
       return true;
     }
   }
@@ -50,6 +51,13 @@ static inline bool arg_int(const char *arg, int *x) {
 static inline bool arg_rational(const char *arg, mpq_t x) {
   int ok = mpq_set_str(x, arg, 10);
   mpq_canonicalize(x);
+  return ok == 0;
+}
+
+static inline bool arg_mpc(const char *re, const char *im, mpc_t x) {
+  int ok
+    = mpfr_set_str(mpc_realref(x), re, 10, MPFR_RNDN)
+    + mpfr_set_str(mpc_imagref(x), im, 10, MPFR_RNDN);
   return ok == 0;
 }
 

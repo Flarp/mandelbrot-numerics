@@ -31,7 +31,17 @@ extern int main(int argc, char **argv) {
       case m_circle:   printf("circle\n");   return 0;
     }
   } else {
-    fprintf(stderr, "non-double precision not supported yet\n");
+    mpc_t n;
+    int period = 0;
+    mpc_init2(n, bits);
+    if (! arg_mpc(argv[2], argv[3], n)) { return 1; }
+    if (! arg_int(argv[4], &period)) { return 1; }
+    m_shape shape = m_r_shape(n, period);
+    mpc_clear(n);
+    switch (shape) {
+      case m_cardioid: printf("cardioid\n"); return 0;
+      case m_circle:   printf("circle\n");   return 0;
+    }
   }
   return 1;
 }

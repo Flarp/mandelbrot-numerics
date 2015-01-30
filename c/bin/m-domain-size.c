@@ -29,7 +29,18 @@ extern int main(int argc, char **argv) {
     printf("%.16e\n", size);
     return 0;
   } else {
-    fprintf(stderr, "non-double precision not supported yet\n");
+    mpc_t n;
+    int period = 0;
+    mpc_init2(n, bits);
+    if (! arg_mpc(argv[2], argv[3], n)) { return 1; }
+    if (! arg_int(argv[4], &period)) { return 1; }
+    mpfr_t size;
+    mpfr_init2(size, bits);
+    m_r_domain_size(size, n, period);
+    mpfr_printf("%Re\n", size);
+    mpfr_clear(size);
+    mpc_clear(n);
+    return 0;
   }
   return 1;
 }
