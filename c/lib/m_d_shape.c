@@ -14,7 +14,7 @@ extern m_shape m_d_shape(complex double nucleus, int period) {
     dz = 2 * z * dz;
     z = z * z + nucleus;
   }
-  double e = - (dcdc / (2 * dc) + dcdz / dz) / (dc * dz);
+  complex double e = - (dcdc / (2 * dc) + dcdz / dz) / (dc * dz);
   if (cabs2(e) < cabs2(e - 1)) {
     return m_cardioid;
   } else {
