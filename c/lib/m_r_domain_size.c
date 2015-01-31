@@ -5,7 +5,6 @@ extern void m_r_domain_size(mpfr_t size, const mpc_t nucleus, int period) {
   mpfr_prec_t precr, preci, prec;
   mpc_get_prec2(&precr, &preci, nucleus);
   prec = precr > preci ? precr : preci;
-  mpfr_set_prec(size, prec);
   // init
 #define CVARS z, dc
 #define RVARS zq2, zp2
@@ -33,6 +32,7 @@ extern void m_r_domain_size(mpfr_t size, const mpc_t nucleus, int period) {
     }
   }
   // size = sqrt(zq2 / norm(dc));
+  mpfr_set_prec(size, prec);
   mpc_norm(zp2, dc, MPFR_RNDN);
   mpfr_div(size, zq2, zp2, MPFR_RNDN);
   mpfr_sqrt(size, size, MPFR_RNDN);

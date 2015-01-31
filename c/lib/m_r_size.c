@@ -5,7 +5,6 @@ extern void m_r_size(mpc_t size, const mpc_t nucleus, int period) {
   mpfr_prec_t precr, preci, prec;
   mpc_get_prec2(&precr, &preci, nucleus);
   prec = precr > preci ? precr : preci;
-  mpc_set_prec(size, prec);
   // init
   mpc_t z, l, l1, b;
   mpc_init2(z, prec);
@@ -28,6 +27,7 @@ extern void m_r_size(mpc_t size, const mpc_t nucleus, int period) {
     mpc_add(b, b, l1, MPC_RNDNN);
   }
   // size = 1 / (b * l * l);
+  mpc_set_prec(size, prec);
   mpc_sqr(l, l, MPC_RNDNN);
   mpc_mul(l1, b, l, MPC_RNDNN);
   mpc_ui_div(size, 1, l1, MPC_RNDNN);

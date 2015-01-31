@@ -42,7 +42,7 @@ extern m_newton m_r_nucleus_step(mpc_t c_out, const mpc_t c_guess, int period) {
   mpfr_prec_t precr, preci, prec;
   mpc_get_prec2(&precr, &preci, c_guess);
   prec = precr > preci ? precr : preci;
-  mpc_set_prec(c_out, prec);
+  mpc_set_prec(c_out, prec); // FIXME might trash when c_out = c_guess
   // init
   mpc_t z, dc, c_new, d;
   mpfr_t d2, epsilon2;
@@ -75,7 +75,6 @@ extern m_newton m_r_nucleus(mpc_t c_out, const mpc_t c_guess, int period, int ma
   mpfr_prec_t precr, preci, prec;
   mpc_get_prec2(&precr, &preci, c_guess);
   prec = precr > preci ? precr : preci;
-  mpc_set_prec(c_out, prec);
   // init
   mpc_t c, z, dc, c_new, d;
   mpfr_t d2, epsilon2;
@@ -98,6 +97,8 @@ extern m_newton m_r_nucleus(mpc_t c_out, const mpc_t c_guess, int period, int ma
       break;
     }
   }
+  // c_out = c;
+  mpc_set_prec(c_out, prec);
   mpc_set(c_out, c, MPC_RNDNN);
   // cleanup
   mpc_clear(c);

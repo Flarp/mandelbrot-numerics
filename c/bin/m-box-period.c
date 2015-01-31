@@ -33,7 +33,21 @@ extern int main(int argc, char **argv) {
       return 0;
     }
   } else {
-    fprintf(stderr, "non-double precision not supported yet\n");
+    mpc_t center;
+    mpfr_t radius;
+    int maxperiod = 0;
+    mpc_init2(center, bits);
+    mpfr_init2(radius, bits);
+    if (! arg_mpc(argv[2], argv[3], center)) { return 1; }
+    if (! arg_mpfr(argv[4], radius)) { return 1; }
+    if (! arg_int(argv[5], &maxperiod)) { return 1; }
+    int period = m_r_box_period_do(center, radius, maxperiod);
+    if (period > 0) {
+      printf("%d\n", period);
+    }
+    mpc_clear(center);
+    mpfr_clear(radius);
+    return period <= 0;
   }
   return 1;
 }

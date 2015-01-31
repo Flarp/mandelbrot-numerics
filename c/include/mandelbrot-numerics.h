@@ -24,14 +24,18 @@ typedef enum m_newton m_newton;
 
 extern m_newton m_d_nucleus_step(complex double *c, complex double c_guess, int period);
 extern m_newton m_d_nucleus(complex double *c, complex double c_guess, int period, int maxsteps);
+
 extern m_newton m_d_misiurewicz_naive_step(complex double *c_out, complex double c_guess, int preperiod, int period);
 extern m_newton m_d_misiurewicz_naive(complex double *c_out, complex double c_guess, int preperiod, int period, int mxsteps);
 extern m_newton m_d_misiurewicz_step(complex double *c_out, complex double c_guess, int preperiod, int period);
 extern m_newton m_d_misiurewicz(complex double *c_out, complex double c_guess, int preperiod, int period, int mxsteps);
+
 extern m_newton m_d_wucleus_step(complex double *z, complex double z_guess, complex double c, int period);
 extern m_newton m_d_wucleus(complex double *z, complex double z_guess, complex double c, int period, int maxsteps);
+
 extern m_newton m_d_interior_step(complex double *z, complex double *c, complex double z_guess, complex double c_guess, complex double interior, int period);
 extern m_newton m_d_interior(complex double *z, complex double *c, complex double z_guess, complex double c_guess, complex double interior, int period, int maxsteps);
+
 extern int m_d_parent(mpq_t angle, complex double *root_out, complex double *parent_out, complex double nucleus, int period, int maxsteps);
 
 extern complex double m_d_size(complex double nucleus, int period);
@@ -71,23 +75,29 @@ extern int m_d_box_period_do(complex double center, double radius, int maxperiod
 extern m_newton m_r_nucleus_step_raw(mpc_t c_out, const mpc_t c_guess, int period, mpc_t z, mpc_t dc, mpc_t c_new, mpc_t d, mpfr_t d2, mpfr_t epsilon2);
 extern m_newton m_r_nucleus_step(mpc_t c_out, const mpc_t c_guess, int period);
 extern m_newton m_r_nucleus(mpc_t c_out, const mpc_t c_guess, int period, int maxsteps);
-/*
-extern bool m_r_wucleus(mpc_t z, mpc_t dz, const mpc_t z_guess, const mpc_t c, int period, int maxsteps);
-extern bool m_r_interior(mpc_t z, mpc_t c, const mpc_t z_guess, const mpc_t c_guess, const mpc_t interior, int period, int maxsteps);
-extern bool m_r_parent(mpq_t angle, mpc_t root, mpc_t parent, const mpc_t nucleus, int period, int maxsteps);
-*/
+
+extern m_newton m_r_wucleus_step_raw(mpc_t z_out, const mpc_t z_guess, const mpc_t c, int period, mpc_t z, mpc_t dz, mpc_t z_new, mpc_t d, mpfr_t d2, mpfr_t epsilon2);
+extern m_newton m_r_wucleus_step(mpc_t z_out, const mpc_t z_guess, const mpc_t c, int period);
+extern m_newton m_r_wucleus(mpc_t z_out, const mpc_t z_guess, const mpc_t c, int period, int maxsteps);
+
+extern m_newton m_r_interior_step_raw(mpc_t z_out, mpc_t c_out, const mpc_t z_guess, const mpc_t c_guess, const mpc_t interior, int period, mpc_t z_new, mpc_t c_new, mpc_t c, mpc_t z, mpc_t dz, mpc_t dc, mpc_t dzdz, mpc_t dcdz, mpc_t det, mpc_t d, mpc_t dz1, mpfr_t d2z, mpfr_t d2c, mpfr_t epsilon2);
+extern m_newton m_r_interior_step(mpc_t z_out, mpc_t c_out, const mpc_t z_guess, const mpc_t c_guess, const mpc_t interior, int period);
+extern m_newton m_r_interior(mpc_t z_out, mpc_t c_out, const mpc_t z_guess, const mpc_t c_guess, const mpc_t interior, int period, int maxsteps);
+
+extern int m_r_parent(mpq_t angle_out, mpc_t root_out, mpc_t parent_out, const mpc_t nucleus, int period, int maxsteps);
+
 extern void m_r_size(mpc_t size, const mpc_t nucleus, int period);
 extern void m_r_domain_size(mpfr_t size, const mpc_t nucleus, int period);
 extern m_shape m_r_shape(const mpc_t nucleus, int period);
 
-/*
 struct m_r_exray_in;
 typedef struct m_r_exray_in m_r_exray_in;
-extern m_r_exray_in *m_r_exray_in_new(const mpq_t angle);
+extern m_r_exray_in *m_r_exray_in_new(const mpq_t angle, int sharpness);
 extern void m_r_exray_in_delete(m_r_exray_in *ray);
-extern bool m_r_exray_in_step(m_r_exray_in *ray);
-extern void m_r_exray_in_get(const m_r_exray_in *ray, mpc_t endpoint);
+extern m_newton m_r_exray_in_step(m_r_exray_in *ray);
+extern void m_r_exray_in_get(const m_r_exray_in *ray, mpc_t c);
 
+/*
 struct m_r_exray_out;
 typedef struct m_r_exray_out m_r_exray_out;
 extern m_r_exray_out *m_r_exray_out_new(const mpc_t c);
@@ -96,6 +106,7 @@ extern bool m_r_exray_out_step(m_r_exray_out *ray);
 extern void m_r_exray_out_get(const m_r_exray_out *ray, mpc_t endpoint);
 extern bool m_r_exray_out_have_bit(const m_r_exray_out *ray);
 extern bool m_r_exray_out_get_bit(const m_r_exray_out *ray);
+*/
 
 struct m_r_box_period;
 typedef struct m_r_box_period m_r_box_period;
@@ -104,6 +115,6 @@ extern void m_r_box_period_delete(m_r_box_period *box);
 extern bool m_r_box_period_step(m_r_box_period *box);
 extern bool m_r_box_period_have_period(const m_r_box_period *box);
 extern int m_r_box_period_get_period(const m_r_box_period *box);
-*/
+extern int m_r_box_period_do(const mpc_t center, const mpfr_t radius, int maxperiod);
 
 #endif

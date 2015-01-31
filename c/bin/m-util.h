@@ -54,6 +54,10 @@ static inline bool arg_rational(const char *arg, mpq_t x) {
   return ok == 0;
 }
 
+static inline bool arg_mpfr(const char *arg, mpfr_t x) {
+  return 0 == mpfr_set_str(x, arg, 10, MPFR_RNDN);
+}
+
 static inline bool arg_mpc(const char *re, const char *im, mpc_t x) {
   int ok
     = mpfr_set_str(mpc_realref(x), re, 10, MPFR_RNDN)

@@ -40,7 +40,28 @@ extern int main(int argc, char **argv) {
     mpq_clear(angle);
     return p < 0;
   } else {
-    fprintf(stderr, "non-double precision not supported yet\n");
+    mpc_t c, root, parent;
+    mpc_init2(c, bits);
+    mpc_init2(root, bits);
+    mpc_init2(parent, bits);
+    int period = 0;
+    int maxsteps = 0;
+    if (! arg_mpc(argv[2], argv[3], c)) { return 1; }
+    if (! arg_int(argv[4], &period)) { return 1; }
+    if (! arg_int(argv[5], &maxsteps)) { return 1; }
+    mpq_t angle;
+    mpq_init(angle);
+    int p = m_r_parent(angle, root, parent, c, period, maxsteps);
+    if (p > 0) {
+      mpfr_printf("%Re %Re %Qd %Re %Re %d\n", mpc_realref(root), mpc_imagref(root), angle, mpc_realref(parent), mpc_imagref(parent), p);
+    } else if (p == 0) {
+      mpfr_printf("%Re %Re\n", mpc_realref(root), mpc_imagref(root));
+    }
+    mpc_clear(c);
+    mpc_clear(root);
+    mpc_clear(parent);
+    mpq_clear(angle);
+    return p < 0;
   }
   return 1;
 }
