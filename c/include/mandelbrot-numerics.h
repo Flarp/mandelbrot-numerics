@@ -38,6 +38,8 @@ extern m_newton m_d_interior(complex double *z, complex double *c, complex doubl
 
 extern int m_d_parent(mpq_t angle, complex double *root_out, complex double *parent_out, complex double nucleus, int period, int maxsteps);
 
+extern bool m_d_interior_de(double *de_out, complex double *dz_out, complex double z, complex double c, int p, int steps);
+
 extern complex double m_d_size(complex double nucleus, int period);
 extern double m_d_domain_size(complex double nucleus, int period);
 extern m_shape m_d_shape(complex double nucleus, int period);
