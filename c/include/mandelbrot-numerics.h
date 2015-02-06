@@ -12,6 +12,28 @@
 
 /* functions returning bool return true for success, false for failure */
 
+struct m_d_mat2 {
+  complex double a, b, c, d;
+};
+typedef struct m_d_mat2 m_d_mat2;
+
+extern void m_d_mat2_set(m_d_mat2 *o, const m_d_mat2 *m);
+extern void m_d_mat2_id(m_d_mat2 *o);
+extern complex double m_d_mat2_tr(const m_d_mat2 *m);
+extern complex double m_d_mat2_det(const m_d_mat2 *m);
+extern void m_d_mat2_inv(m_d_mat2 *m1, const m_d_mat2 *m);
+extern void m_d_mat2_mul(m_d_mat2 *o, const m_d_mat2 *l, const m_d_mat2 *r);
+extern void m_d_mat2_diagonalize(m_d_mat2 *p, m_d_mat2 *d, m_d_mat2 *p1, const m_d_mat2 *m);
+extern void m_d_mat2_moebius3(m_d_mat2 *m, complex double zero, complex double one, complex double infinity);
+
+struct m_d_mat2_interp;
+typedef struct m_d_mat2_interp m_d_mat2_interp;
+
+extern m_d_mat2_interp *m_d_mat2_interp_new(void);
+extern void m_d_mat2_interp_delete(m_d_mat2_interp *i);
+extern void m_d_mat2_interp_init(m_d_mat2_interp *i, const m_d_mat2 *f, const m_d_mat2 *g);
+extern void m_d_mat2_interp_do(m_d_mat2 *m, const m_d_mat2_interp *i, double t);
+
 enum m_shape { m_cardioid, m_circle };
 typedef enum m_shape m_shape;
 
