@@ -5,7 +5,7 @@ includedir=${prefix}/include
 Name: mandelbrot-numerics
 Description: Numerical algorithms related to the Mandelbrot set
 Version: 0.1.0.0
-URL: https://gitorious.org/mandelbrot
+URL: http://code.mathr.co.uk/mandelbrot-numerics
 Libs: -L${libdir} -lmandelbrot-numerics
 Libs.private: -lmpc -lmpfr -lgmp -lm
 Cflags: -I${includedir}

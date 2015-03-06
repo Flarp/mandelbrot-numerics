@@ -3,7 +3,7 @@ version:             0.1.0.0
 synopsis:            numeric algorithms related to the Mandelbrot set
 description:         Numeric algorithms related to the Mandelbrot set:
                      ray tracing, nucleus location, bond points, etc.
-homepage:            https://gitorious.org/mandelbrot
+homepage:            http://code.mathr.co.uk/mandelbrot-numerics
 license:             GPL-3
 license-file:        COPYING
 author:              Claude Heiland-Allen
@@ -56,9 +56,9 @@ test-suite mandelbrot-numerics-tests
 
 source-repository head
   type:     git
-  location: git://gitorious.org/mandelbrot/mandelbrot-numerics.git
+  location: http://code.mathr.co.uk/mandelbrot-numerics.git
 
 source-repository this
   type:     git
-  location: git://gitorious.org/mandelbrot/mandelbrot-numerics.git
+  location: http://code.mathr.co.uk/mandelbrot-numerics.git
   tag:      v0.1.0.0
