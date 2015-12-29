@@ -1,6 +1,6 @@
 PKGCONFIG := PKG_CONFIG_PATH="$(prefix)/lib/pkgconfig" pkg-config
 COMPILE := gcc -std=c99 -Wall -Wextra -pedantic -fPIC -O3 -pipe -MMD `$(PKGCONFIG) --cflags mandelbrot-numerics`
-LIBS    := `$(PKGCONFIG) --libs mandelbrot-numerics`
+LIBS    := `$(PKGCONFIG) --libs mandelbrot-numerics` -lmpc -lmpfr -lgmp -lm
 OBJECTS := $(patsubst %.c,%.o,$(wildcard *.c))
 DEPENDS := $(patsubst %.o,%.d,$(OBJECTS))
 EXES    := $(patsubst %.o,%,$(OBJECTS))
