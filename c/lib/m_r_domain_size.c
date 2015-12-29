@@ -1,7 +1,8 @@
 #include <mandelbrot-numerics.h>
 
-extern void m_r_domain_size(mpfr_t size, const mpc_t nucleus, int period) {
+extern int m_r_domain_size(mpfr_t size, const mpc_t nucleus, int period) {
   // prec
+  int partial = 1;
   mpfr_prec_t precr, preci, prec;
   mpc_get_prec2(&precr, &preci, nucleus);
   prec = precr > preci ? precr : preci;
@@ -28,6 +29,7 @@ extern void m_r_domain_size(mpfr_t size, const mpc_t nucleus, int period) {
     // zp2 = norm(z);
     mpc_norm(zp2, z, MPFR_RNDN);
     if (q < period && mpfr_less_p(zp2, zq2)) {
+      partial = q;
       mpfr_set(zq2, zp2, MPFR_RNDN);
     }
   }
@@ -42,4 +44,5 @@ extern void m_r_domain_size(mpfr_t size, const mpc_t nucleus, int period) {
   mpfr_clears(RVARS, (mpfr_ptr) 0);
 #undef CVARS
 #undef RVARS
+  return partial;
 }
