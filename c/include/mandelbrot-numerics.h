@@ -13,18 +13,18 @@
 /* functions returning bool return true for success, false for failure */
 
 struct m_d_mat2 {
-  complex double a, b, c, d;
+  double _Complex a, b, c, d;
 };
 typedef struct m_d_mat2 m_d_mat2;
 
 extern void m_d_mat2_set(m_d_mat2 *o, const m_d_mat2 *m);
 extern void m_d_mat2_id(m_d_mat2 *o);
-extern complex double m_d_mat2_tr(const m_d_mat2 *m);
-extern complex double m_d_mat2_det(const m_d_mat2 *m);
+extern double _Complex m_d_mat2_tr(const m_d_mat2 *m);
+extern double _Complex m_d_mat2_det(const m_d_mat2 *m);
 extern void m_d_mat2_inv(m_d_mat2 *m1, const m_d_mat2 *m);
 extern void m_d_mat2_mul(m_d_mat2 *o, const m_d_mat2 *l, const m_d_mat2 *r);
 extern void m_d_mat2_diagonalize(m_d_mat2 *p, m_d_mat2 *d, m_d_mat2 *p1, const m_d_mat2 *m);
-extern void m_d_mat2_moebius3(m_d_mat2 *m, complex double zero, complex double one, complex double infinity);
+extern void m_d_mat2_moebius3(m_d_mat2 *m, double _Complex zero, double _Complex one, double _Complex infinity);
 
 struct m_d_mat2_interp;
 typedef struct m_d_mat2_interp m_d_mat2_interp;
@@ -42,56 +42,56 @@ typedef enum m_newton m_newton;
 
 /* double precision: m_d_*()  */
 /* functions taking non-const mpq_t use them for output */
-/* functions taking pointers to complex double use them for output */
+/* functions taking pointers to double _Complex use them for output */
 
-extern m_newton m_d_nucleus_step(complex double *c, complex double c_guess, int period);
-extern m_newton m_d_nucleus(complex double *c, complex double c_guess, int period, int maxsteps);
+extern m_newton m_d_nucleus_step(double _Complex *c, double _Complex c_guess, int period);
+extern m_newton m_d_nucleus(double _Complex *c, double _Complex c_guess, int period, int maxsteps);
 
-extern m_newton m_d_misiurewicz_naive_step(complex double *c_out, complex double c_guess, int preperiod, int period);
-extern m_newton m_d_misiurewicz_naive(complex double *c_out, complex double c_guess, int preperiod, int period, int mxsteps);
-extern m_newton m_d_misiurewicz_step(complex double *c_out, complex double c_guess, int preperiod, int period);
-extern m_newton m_d_misiurewicz(complex double *c_out, complex double c_guess, int preperiod, int period, int mxsteps);
+extern m_newton m_d_misiurewicz_naive_step(double _Complex *c_out, double _Complex c_guess, int preperiod, int period);
+extern m_newton m_d_misiurewicz_naive(double _Complex *c_out, double _Complex c_guess, int preperiod, int period, int mxsteps);
+extern m_newton m_d_misiurewicz_step(double _Complex *c_out, double _Complex c_guess, int preperiod, int period);
+extern m_newton m_d_misiurewicz(double _Complex *c_out, double _Complex c_guess, int preperiod, int period, int mxsteps);
 
-extern m_newton m_d_wucleus_step(complex double *z, complex double z_guess, complex double c, int period);
-extern m_newton m_d_wucleus(complex double *z, complex double z_guess, complex double c, int period, int maxsteps);
+extern m_newton m_d_wucleus_step(double _Complex *z, double _Complex z_guess, double _Complex c, int period);
+extern m_newton m_d_wucleus(double _Complex *z, double _Complex z_guess, double _Complex c, int period, int maxsteps);
 
-extern m_newton m_d_interior_step(complex double *z, complex double *c, complex double z_guess, complex double c_guess, complex double interior, int period);
-extern m_newton m_d_interior(complex double *z, complex double *c, complex double z_guess, complex double c_guess, complex double interior, int period, int maxsteps);
+extern m_newton m_d_interior_step(double _Complex *z, double _Complex *c, double _Complex z_guess, double _Complex c_guess, double _Complex interior, int period);
+extern m_newton m_d_interior(double _Complex *z, double _Complex *c, double _Complex z_guess, double _Complex c_guess, double _Complex interior, int period, int maxsteps);
 
-extern int m_d_parent(mpq_t angle, complex double *root_out, complex double *parent_out, complex double nucleus, int period, int maxsteps);
+extern int m_d_parent(mpq_t angle, double _Complex *root_out, double _Complex *parent_out, double _Complex nucleus, int period, int maxsteps);
 
-extern bool m_d_interior_de(double *de_out, complex double *dz_out, complex double z, complex double c, int p, int steps);
+extern bool m_d_interior_de(double *de_out, double _Complex *dz_out, double _Complex z, double _Complex c, int p, int steps);
 
-extern complex double m_d_size(complex double nucleus, int period);
-extern double m_d_domain_size(complex double nucleus, int period);
-extern m_shape m_d_shape(complex double nucleus, int period);
+extern double _Complex m_d_size(double _Complex nucleus, int period);
+extern double m_d_domain_size(double _Complex nucleus, int period);
+extern m_shape m_d_shape(double _Complex nucleus, int period);
 
 struct m_d_exray_in;
 typedef struct m_d_exray_in m_d_exray_in;
 extern m_d_exray_in *m_d_exray_in_new(const mpq_t angle, int sharpness);
 extern void m_d_exray_in_delete(m_d_exray_in *ray);
 extern m_newton m_d_exray_in_step(m_d_exray_in *ray);
-extern complex double m_d_exray_in_get(const m_d_exray_in *ray);
-extern complex double m_d_exray_in_do(const mpq_t angle, int sharpness, int maxsteps);
+extern double _Complex m_d_exray_in_get(const m_d_exray_in *ray);
+extern double _Complex m_d_exray_in_do(const mpq_t angle, int sharpness, int maxsteps);
 
 struct m_d_exray_out;
 typedef struct m_d_exray_out m_d_exray_out;
-extern m_d_exray_out *m_d_exray_out_new(complex double c, int sharpness, int maxdwell);
+extern m_d_exray_out *m_d_exray_out_new(double _Complex c, int sharpness, int maxdwell);
 extern void m_d_exray_out_delete(m_d_exray_out *ray);
 extern m_newton m_d_exray_out_step(m_d_exray_out *ray);
 extern bool m_d_exray_out_have_bit(const m_d_exray_out *ray);
 extern bool m_d_exray_out_get_bit(const m_d_exray_out *ray);
-extern complex double m_d_exray_out_get(const m_d_exray_out *ray);
-extern char *m_d_exray_out_do(complex double c, int sharpness, int maxdwell);
+extern double _Complex m_d_exray_out_get(const m_d_exray_out *ray);
+extern char *m_d_exray_out_do(double _Complex c, int sharpness, int maxdwell);
 
 struct m_d_box_period;
 typedef struct m_d_box_period m_d_box_period;
-extern m_d_box_period *m_d_box_period_new(complex double center, double radius);
+extern m_d_box_period *m_d_box_period_new(double _Complex center, double radius);
 extern void m_d_box_period_delete(m_d_box_period *box);
 extern bool m_d_box_period_step(m_d_box_period *box);
 extern bool m_d_box_period_have_period(const m_d_box_period *box);
 extern int m_d_box_period_get_period(const m_d_box_period *box);
-extern int m_d_box_period_do(complex double center, double radius, int maxperiod);
+extern int m_d_box_period_do(double _Complex center, double radius, int maxperiod);
 
 /* arbitrary precision: m_r_*() */
 /* functions taking non-const mpq_t/mpfr_t/mpc_t use them for output */
@@ -111,7 +111,7 @@ extern m_newton m_r_interior(mpc_t z_out, mpc_t c_out, const mpc_t z_guess, cons
 extern int m_r_parent(mpq_t angle_out, mpc_t root_out, mpc_t parent_out, const mpc_t nucleus, int period, int maxsteps);
 
 extern void m_r_size(mpc_t size, const mpc_t nucleus, int period);
-extern void m_r_domain_size(mpfr_t size, const mpc_t nucleus, int period);
+extern int m_r_domain_size(mpfr_t size, const mpc_t nucleus, int period);
 extern m_shape m_r_shape(const mpc_t nucleus, int period);
 
 struct m_r_exray_in;

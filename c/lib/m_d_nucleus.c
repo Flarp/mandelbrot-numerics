@@ -1,9 +1,9 @@
 #include <mandelbrot-numerics.h>
 #include "m_d_util.h"
 
-extern m_newton m_d_nucleus_step(complex double *c_out, complex double c_guess, int period) {
-  complex double z = 0;
-  complex double dc = 0;
+extern m_newton m_d_nucleus_step(double _Complex *c_out, double _Complex c_guess, int period) {
+  double _Complex z = 0;
+  double _Complex dc = 0;
   for (int i = 0; i < period; ++i) {
     dc = 2 * z * dc + 1;
     z = z * z + c_guess;
@@ -12,8 +12,8 @@ extern m_newton m_d_nucleus_step(complex double *c_out, complex double c_guess, 
     *c_out = c_guess;
     return m_converged;
   }
-  complex double c_new = c_guess - z / dc;
-  complex double d = c_new - c_guess;
+  double _Complex c_new = c_guess - z / dc;
+  double _Complex d = c_new - c_guess;
   if (cabs2(d) <= epsilon2) {
     *c_out = c_new;
     return m_converged;
@@ -27,9 +27,9 @@ extern m_newton m_d_nucleus_step(complex double *c_out, complex double c_guess, 
   }
 }
 
-extern m_newton m_d_nucleus(complex double *c_out, complex double c_guess, int period, int maxsteps) {
+extern m_newton m_d_nucleus(double _Complex *c_out, double _Complex c_guess, int period, int maxsteps) {
   m_newton result = m_failed;
-  complex double c = c_guess;
+  double _Complex c = c_guess;
   for (int i = 0; i < maxsteps; ++i) {
     if (m_stepped != (result = m_d_nucleus_step(&c, c, period))) {
       break;

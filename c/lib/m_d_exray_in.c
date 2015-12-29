@@ -6,7 +6,7 @@ struct m_d_exray_in {
   mpq_t one;
   int sharpness;
   double er;
-  complex double c;
+  double _Complex c;
   int j;
   int k;
 };
@@ -46,16 +46,16 @@ extern m_newton m_d_exray_in_step(m_d_exray_in *ray) {
   }
   double r = pow(ray->er, pow(0.5, (ray->j + 0.5) / ray->sharpness));
   double a = twopi * mpq_get_d(ray->angle);
-  complex double target = r * (cos(a) + I * sin(a));
-  complex double c = ray->c;
+  double _Complex target = r * (cos(a) + I * sin(a));
+  double _Complex c = ray->c;
   for (int i = 0; i < 64; ++i) { // FIXME arbitrary limit
-    complex double z = 0;
-    complex double dc = 0;
+    double _Complex z = 0;
+    double _Complex dc = 0;
     for (int p = 0; p <= ray->k; ++p) {
       dc = 2 * z * dc + 1;
       z = z * z + c;
     }
-    complex double c_new = c - (z - target) / dc;
+    double _Complex c_new = c - (z - target) / dc;
     double d2 = cabs2(c_new - c);
     if (cisfinite(c_new)) {
       c = c_new;
@@ -80,14 +80,14 @@ extern m_newton m_d_exray_in_step(m_d_exray_in *ray) {
   }
 }
 
-extern complex double m_d_exray_in_get(const m_d_exray_in *ray) {
+extern double _Complex m_d_exray_in_get(const m_d_exray_in *ray) {
   if (! ray) {
     return 0;
   }
   return ray->c;
 }
 
-extern complex double m_d_exray_in_do(const mpq_t angle, int sharpness, int maxsteps) {
+extern double _Complex m_d_exray_in_do(const mpq_t angle, int sharpness, int maxsteps) {
   m_d_exray_in *ray = m_d_exray_in_new(angle, sharpness);
   if (! ray) {
     return 0;
@@ -97,7 +97,7 @@ extern complex double m_d_exray_in_do(const mpq_t angle, int sharpness, int maxs
       break;
     }
   }
-  complex double endpoint = m_d_exray_in_get(ray);
+  double _Complex endpoint = m_d_exray_in_get(ray);
   m_d_exray_in_delete(ray);
   return endpoint;
 }

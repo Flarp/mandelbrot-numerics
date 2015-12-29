@@ -40,7 +40,7 @@ struct m_r_box_period {
 };
 
 extern m_r_box_period *m_r_box_period_new(const mpc_t center, const mpfr_t radius) {
-  m_r_box_period *box = malloc(sizeof(*box));
+  m_r_box_period *box = (m_r_box_period *) malloc(sizeof(*box));
   if (! box) {
     return 0;
   }

@@ -14,20 +14,20 @@ extern void m_d_mat2_id(m_d_mat2 *o) {
   o->d = 1;
 }
 
-extern complex double m_d_mat2_tr(const m_d_mat2 *m) {
+extern double _Complex m_d_mat2_tr(const m_d_mat2 *m) {
   return m->a + m->d;
 }
 
-extern complex double m_d_mat2_det(const m_d_mat2 *m) {
+extern double _Complex m_d_mat2_det(const m_d_mat2 *m) {
   return m->a * m->d - m->b * m->c;
 }
 
 extern void m_d_mat2_inv(m_d_mat2 *m1, const m_d_mat2 *m) {
-  complex double det = m_d_mat2_det(m);
-  complex double a =  m->d / det;
-  complex double b = -m->b / det;
-  complex double c = -m->c / det;
-  complex double d =  m->a / det;
+  double _Complex det = m_d_mat2_det(m);
+  double _Complex a =  m->d / det;
+  double _Complex b = -m->b / det;
+  double _Complex c = -m->c / det;
+  double _Complex d =  m->a / det;
   m1->a = a;
   m1->b = b;
   m1->c = c;
@@ -35,7 +35,7 @@ extern void m_d_mat2_inv(m_d_mat2 *m1, const m_d_mat2 *m) {
 }
 
 extern void m_d_mat2_mul(m_d_mat2 *o, const m_d_mat2 *l, const m_d_mat2 *r) {
-  complex double a, b, c, d;
+  double _Complex a, b, c, d;
   a = l->a * r->a + l->b * r->c;
   b = l->a * r->b + l->b * r->d;
   c = l->c * r->a + l->d * r->c;
@@ -47,11 +47,11 @@ extern void m_d_mat2_mul(m_d_mat2 *o, const m_d_mat2 *l, const m_d_mat2 *r) {
 }
 
 extern void m_d_mat2_diagonalize(m_d_mat2 *p, m_d_mat2 *d, m_d_mat2 *p1, const m_d_mat2 *m) {
-  complex double tr2 = m_d_mat2_tr(m) / 2;
-  complex double det = m_d_mat2_det(m);
-  complex double k = csqrt(tr2 * tr2 - det);
-  complex double l1 = tr2 + k;
-  complex double l2 = tr2 - k;
+  double _Complex tr2 = m_d_mat2_tr(m) / 2;
+  double _Complex det = m_d_mat2_det(m);
+  double _Complex k = csqrt(tr2 * tr2 - det);
+  double _Complex l1 = tr2 + k;
+  double _Complex l2 = tr2 - k;
   d->a = l1;
   d->b = 0;
   d->c = 0;
@@ -76,7 +76,7 @@ extern void m_d_mat2_diagonalize(m_d_mat2 *p, m_d_mat2 *d, m_d_mat2 *p1, const m
   }
 }
 
-extern void m_d_mat2_moebius3(m_d_mat2 *m, complex double zero, complex double one, complex double infinity) {
+extern void m_d_mat2_moebius3(m_d_mat2 *m, double _Complex zero, double _Complex one, double _Complex infinity) {
   m->a = infinity * (zero - one);
   m->b = zero * (one - infinity);
   m->c = zero - one;

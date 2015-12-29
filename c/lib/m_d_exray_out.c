@@ -10,18 +10,18 @@ struct m_d_exray_out {
   double er;
   double er2;
   double loger2;
-  complex double c;
-  complex double z;
+  double _Complex c;
+  double _Complex z;
   double d;
   int n;
   int bit;
 };
 
-extern m_d_exray_out *m_d_exray_out_new(complex double c, int sharpness, int maxdwell) {
+extern m_d_exray_out *m_d_exray_out_new(double _Complex c, int sharpness, int maxdwell) {
   double er = 65536;
   double er2 = er * er;
   int n = 0;
-  complex double z = 0;
+  double _Complex z = 0;
   for (int i = 0; i < maxdwell; ++i) {
     n = n + 1;
     z = z * z + c;
@@ -68,17 +68,17 @@ extern m_newton m_d_exray_out_step(m_d_exray_out *ray) {
   double a = carg(ray->z) / twopi;
   double t = a - floor(a);
   if (m == ray->n) {
-    complex double k = r * cexp(I * twopi *  t);
-    complex double c = ray->c;
-    complex double z = 0;
+    double _Complex k = r * cexp(I * twopi *  t);
+    double _Complex c = ray->c;
+    double _Complex z = 0;
     for (int i = 0; i < 64; ++i) { // FIXME arbitrary limit
-      complex double dc = 0;
+      double _Complex dc = 0;
       z = 0;
       for (int p = 0; p < m; ++p) {
         dc = 2 * z * dc + 1;
         z = z * z + c;
       }
-      complex double c_new = c - (z - k) / dc;
+      double _Complex c_new = c - (z - k) / dc;
       double d2 = cabs2(c_new - c);
       if (cisfinite(c_new)) {
         c = c_new;
@@ -97,22 +97,22 @@ extern m_newton m_d_exray_out_step(m_d_exray_out *ray) {
     }
     return m_failed;
   } else {
-    complex double k[2] = { r * cexp(I * pi * t), r * cexp(I * pi * (t + 1)) };
-    complex double c[2] = { ray->c, ray->c };
-    complex double z[2] = { 0, 0 };
+    double _Complex k[2] = { r * cexp(I * pi * t), r * cexp(I * pi * (t + 1)) };
+    double _Complex c[2] = { ray->c, ray->c };
+    double _Complex z[2] = { 0, 0 };
     double d2[2];
     double e2[2];
     for (int i = 0; i < 64; ++i) { // FIXME arbitrary limit
       z[0] = 0;
       z[1] = 0;
-      complex double dc[2] = { 0, 0 };
+      double _Complex dc[2] = { 0, 0 };
       for (int p = 0; p < m; ++p) {
         for (int w = 0; w < 2; ++w) {
           dc[w] = 2 * z[w] * dc[w] + 1;
           z[w] = z[w] * z[w] + c[w];
         }
       }
-      complex double c_new[2];
+      double _Complex c_new[2];
       for (int w = 0; w < 2; ++w) {
         c_new[w] = c[w] - (z[w] - k[w]) / dc[w];
         e2[w] = cabs2(c_new[w] - c[w]);
@@ -159,14 +159,14 @@ extern bool m_d_exray_out_get_bit(const m_d_exray_out *ray) {
   return ray->bit;
 }
 
-extern complex double m_d_exray_out_get(const m_d_exray_out *ray) {
+extern double _Complex m_d_exray_out_get(const m_d_exray_out *ray) {
   if (! ray) {
     return 0;
   }
   return ray->c;
 }
 
-extern char *m_d_exray_out_do(complex double c, int sharpness, int maxdwell) {
+extern char *m_d_exray_out_do(double _Complex c, int sharpness, int maxdwell) {
   m_d_exray_out *ray = m_d_exray_out_new(c, sharpness, maxdwell);
   if (! ray) {
     return 0;

@@ -11,11 +11,11 @@ static inline bool odd(int a) {
   return a & 1;
 }
 
-static inline double cabs2(complex double z) {
+static inline double cabs2(double _Complex z) {
   return creal(z) * creal(z) + cimag(z) * cimag(z);
 }
 
-static inline bool cisfinite(complex double z) {
+static inline bool cisfinite(double _Complex z) {
   return isfinite(creal(z)) && isfinite(cimag(z));
 }
 

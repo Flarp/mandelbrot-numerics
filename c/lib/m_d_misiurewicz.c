@@ -1,11 +1,11 @@
 #include <mandelbrot-numerics.h>
 #include "m_d_util.h"
 
-extern m_newton m_d_misiurewicz_naive_step(complex double *c_out, complex double c_guess, int preperiod, int period) {
-  complex double z = 0;
-  complex double dc = 0;
-  complex double zp = 0;
-  complex double dcp = 0;
+extern m_newton m_d_misiurewicz_naive_step(double _Complex *c_out, double _Complex c_guess, int preperiod, int period) {
+  double _Complex z = 0;
+  double _Complex dc = 0;
+  double _Complex zp = 0;
+  double _Complex dcp = 0;
   for (int i = 0; i < preperiod + 1 + period; ++i) {
     if (i == preperiod + 1) {
       zp = z;
@@ -14,10 +14,10 @@ extern m_newton m_d_misiurewicz_naive_step(complex double *c_out, complex double
     dc = 2 * z * dc + 1;
     z = z * z + c_guess;
   }
-  complex double f = z - zp;
-  complex double df = dc - dcp;
-  complex double c_new = c_guess - f / df;
-  complex double d = c_new - c_guess;
+  double _Complex f = z - zp;
+  double _Complex df = dc - dcp;
+  double _Complex c_new = c_guess - f / df;
+  double _Complex d = c_new - c_guess;
   if (cabs2(d) <= epsilon2) {
     *c_out = c_new;
     return m_converged;
@@ -31,9 +31,9 @@ extern m_newton m_d_misiurewicz_naive_step(complex double *c_out, complex double
   }
 }
 
-extern m_newton m_d_misiurewicz_naive(complex double *c_out, complex double c_guess, int preperiod, int period, int maxsteps) {
+extern m_newton m_d_misiurewicz_naive(double _Complex *c_out, double _Complex c_guess, int preperiod, int period, int maxsteps) {
   m_newton result = m_failed;
-  complex double c = c_guess;
+  double _Complex c = c_guess;
   for (int i = 0; i < maxsteps; ++i) {
     if (m_stepped != (result = m_d_misiurewicz_naive_step(&c, c, preperiod, period))) {
       break;
@@ -72,12 +72,12 @@ h' = h * sum (((i +p)'-(i)') / ((i +p) - (i))
 
 */
 
-extern m_newton m_d_misiurewicz_step(complex double *c_out, complex double c_guess, int preperiod, int period) {
+extern m_newton m_d_misiurewicz_step(double _Complex *c_out, double _Complex c_guess, int preperiod, int period) {
   // iteration
-  complex double z = 0;
-  complex double dc = 0;
-  complex double zp[preperiod + 1 + period + 1];
-  complex double dcp[preperiod + 1 + period + 1];
+  double _Complex z = 0;
+  double _Complex dc = 0;
+  double _Complex zp[preperiod + 1 + period + 1];
+  double _Complex dcp[preperiod + 1 + period + 1];
   for (int i = 0; i < preperiod + 1 + period; ++i) {
     zp[i] = z;
     dcp[i] = dc;
@@ -86,11 +86,11 @@ extern m_newton m_d_misiurewicz_step(complex double *c_out, complex double c_gue
   }
   zp[preperiod + 1 + period] = z;
   dcp[preperiod + 1 + period] = dc;
-  complex double h = 1;
-  complex double dh = 0;
+  double _Complex h = 1;
+  double _Complex dh = 0;
   // reject lower preperiods
   for (int i = 0; i < preperiod + 1; ++i) {
-    complex double k = zp[i + period] - zp[i];
+    double _Complex k = zp[i + period] - zp[i];
     h = h * k;
     dh = dh + (dcp[i + period] - dcp[i]) / k;
   }
@@ -98,7 +98,7 @@ extern m_newton m_d_misiurewicz_step(complex double *c_out, complex double c_gue
   // reject lower periods
   for (int i = 1; i < period; ++i) {
     for (int j = 0; j < period; ++j) {
-      complex double k = zp[preperiod + 2 + ((j + i) % period)] - zp[preperiod + 2 + j];
+      double _Complex k = zp[preperiod + 2 + ((j + i) % period)] - zp[preperiod + 2 + j];
       h = h * k;
       dh = dh + (dcp[preperiod + 2 + ((j + i) % period)] - dcp[preperiod + 2 + j]) / k;
     }
@@ -106,14 +106,14 @@ extern m_newton m_d_misiurewicz_step(complex double *c_out, complex double c_gue
 */
   // build function
   dh = dh * h;
-  complex double g = zp[preperiod + 1 + period] - zp[preperiod + 1];
-  complex double dg = dcp[preperiod + 1 + period] - dcp[preperiod + 1];
-  complex double f = g / h;
-  complex double df = (dg * h - g * dh) / (h * h);
+  double _Complex g = zp[preperiod + 1 + period] - zp[preperiod + 1];
+  double _Complex dg = dcp[preperiod + 1 + period] - dcp[preperiod + 1];
+  double _Complex f = g / h;
+  double _Complex df = (dg * h - g * dh) / (h * h);
   // newton step
-  complex double c_new = c_guess - f / df;
+  double _Complex c_new = c_guess - f / df;
   // check convergence
-  complex double d = c_new - c_guess;
+  double _Complex d = c_new - c_guess;
   if (cabs2(d) <= epsilon2) {
     *c_out = c_new;
     return m_converged;
@@ -127,9 +127,9 @@ extern m_newton m_d_misiurewicz_step(complex double *c_out, complex double c_gue
   }
 }
 
-extern m_newton m_d_misiurewicz(complex double *c_out, complex double c_guess, int preperiod, int period, int maxsteps) {
+extern m_newton m_d_misiurewicz(double _Complex *c_out, double _Complex c_guess, int preperiod, int period, int maxsteps) {
   m_newton result = m_failed;
-  complex double c = c_guess;
+  double _Complex c = c_guess;
   for (int i = 0; i < maxsteps; ++i) {
     if (m_stepped != (result = m_d_misiurewicz_step(&c, c, preperiod, period))) {
       break;

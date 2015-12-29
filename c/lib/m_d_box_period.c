@@ -1,13 +1,13 @@
 #include <mandelbrot-numerics.h>
 #include "m_d_util.h"
 
-static double cross(complex double a, complex double b) {
+static double cross(double _Complex a, double _Complex b) {
   return cimag(a) * creal(b) - creal(a) * cimag(b);
 }
 
-static bool crosses_positive_real_axis(complex double a, complex double b) {
+static bool crosses_positive_real_axis(double _Complex a, double _Complex b) {
   if (sgn(cimag(a)) != sgn(cimag(b))) {
-    complex double d = b - a;
+    double _Complex d = b - a;
     int s = sgn(cimag(d));
     int t = sgn(cross(d, a));
     return s == t;
@@ -15,7 +15,7 @@ static bool crosses_positive_real_axis(complex double a, complex double b) {
   return false;
 }
 
-static bool surrounds_origin(complex double a, complex double b, complex double c, complex double d) {
+static bool surrounds_origin(double _Complex a, double _Complex b, double _Complex c, double _Complex d) {
   return odd
     ( crosses_positive_real_axis(a, b)
     + crosses_positive_real_axis(b, c)
@@ -25,13 +25,13 @@ static bool surrounds_origin(complex double a, complex double b, complex double 
 }
 
 struct m_d_box_period {
-  complex double c[4];
-  complex double z[4];
+  double _Complex c[4];
+  double _Complex z[4];
   int p;
 };
 
-extern m_d_box_period *m_d_box_period_new(complex double center, double radius) {
-  m_d_box_period *box = malloc(sizeof(*box));
+extern m_d_box_period *m_d_box_period_new(double _Complex center, double radius) {
+  m_d_box_period *box = (m_d_box_period *) malloc(sizeof(*box));
   if (! box) {
     return 0;
   }
@@ -76,7 +76,7 @@ extern int m_d_box_period_get_period(const m_d_box_period *box) {
   return box->p;
 }
 
-extern int m_d_box_period_do(complex double center, double radius, int maxperiod) {
+extern int m_d_box_period_do(double _Complex center, double radius, int maxperiod) {
   m_d_box_period *box = m_d_box_period_new(center, radius);
   if (! box) {
     return 0;
