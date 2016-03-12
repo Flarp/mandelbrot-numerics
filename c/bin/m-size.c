@@ -35,11 +35,11 @@ extern int main(int argc, char **argv) {
     if (! arg_mpc(argv[2], argv[3], n)) { return 1; }
     if (! arg_int(argv[4], &period)) { return 1; }
     mpc_t size;
-    mpc_init2(size, bits);
+    mpc_init2(size, 53);
     m_r_size(size, n, period);
     mpfr_t r, t;
-    mpfr_init2(r, bits);
-    mpfr_init2(t, bits);
+    mpfr_init2(r, 53);
+    mpfr_init2(t, 53);
     mpc_abs(r, size, MPFR_RNDN);
     mpc_arg(t, size, MPFR_RNDN);
     mpfr_printf("%Re %Re\n", r, t);

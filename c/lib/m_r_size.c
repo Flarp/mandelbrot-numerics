@@ -8,9 +8,9 @@ extern void m_r_size(mpc_t size, const mpc_t nucleus, int period) {
   // init
   mpc_t z, l, l1, b;
   mpc_init2(z, prec);
-  mpc_init2(l, prec);
-  mpc_init2(l1, prec);
-  mpc_init2(b, prec);
+  mpc_init2(l, 53);
+  mpc_init2(l1, 53);
+  mpc_init2(b, 53);
   // l = 1; b = 1; z = 0;
   mpc_set_si(l, 1, MPC_RNDNN);
   mpc_set_si(b, 1, MPC_RNDNN);
@@ -27,7 +27,7 @@ extern void m_r_size(mpc_t size, const mpc_t nucleus, int period) {
     mpc_add(b, b, l1, MPC_RNDNN);
   }
   // size = 1 / (b * l * l);
-  mpc_set_prec(size, prec);
+  mpc_set_prec(size, 53);
   mpc_sqr(l, l, MPC_RNDNN);
   mpc_mul(l1, b, l, MPC_RNDNN);
   mpc_ui_div(size, 1, l1, MPC_RNDNN);
