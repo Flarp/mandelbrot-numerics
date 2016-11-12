@@ -35,7 +35,7 @@ extern void m_d_exray_in_delete(m_d_exray_in *ray) {
   free(ray);
 }
 
-extern m_newton m_d_exray_in_step(m_d_exray_in *ray) {
+extern m_newton m_d_exray_in_step(m_d_exray_in *ray, int maxsteps) {
   if (ray->j >= ray->sharpness) {
     mpq_mul_2exp(ray->angle, ray->angle, 1);
     if (mpq_cmp_ui(ray->angle, 1, 1) >= 0) {
@@ -48,7 +48,7 @@ extern m_newton m_d_exray_in_step(m_d_exray_in *ray) {
   double a = twopi * mpq_get_d(ray->angle);
   double _Complex target = r * (cos(a) + I * sin(a));
   double _Complex c = ray->c;
-  for (int i = 0; i < 64; ++i) { // FIXME arbitrary limit
+  for (int i = 0; i < maxsteps; ++i) {
     double _Complex z = 0;
     double _Complex dc = 0;
     for (int p = 0; p <= ray->k; ++p) {
@@ -87,13 +87,13 @@ extern double _Complex m_d_exray_in_get(const m_d_exray_in *ray) {
   return ray->c;
 }
 
-extern double _Complex m_d_exray_in_do(const mpq_t angle, int sharpness, int maxsteps) {
+extern double _Complex m_d_exray_in_do(const mpq_t angle, int sharpness, int maxsteps, int maxnewtonsteps) {
   m_d_exray_in *ray = m_d_exray_in_new(angle, sharpness);
   if (! ray) {
     return 0;
   }
   for (int i = 0; i < maxsteps; ++i) {
-    if (m_stepped != m_d_exray_in_step(ray)) {
+    if (m_stepped != m_d_exray_in_step(ray, maxnewtonsteps)) {
       break;
     }
   }

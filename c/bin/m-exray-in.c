@@ -32,7 +32,7 @@ extern int main(int argc, char **argv) {
     for (int i = 0; i < maxsteps; ++i) {
       complex double c = m_d_exray_in_get(ray);
       printf("%.16e %.16e\n", creal(c), cimag(c));
-      if (m_stepped != m_d_exray_in_step(ray)) {
+      if (m_stepped != m_d_exray_in_step(ray, 8)) {
         retval = 1;
         break;
       }
@@ -46,7 +46,7 @@ extern int main(int argc, char **argv) {
     for (int i = 0; i < maxsteps; ++i) {
       m_r_exray_in_get(ray, c);
       mpfr_printf("%Re %Re\n", mpc_realref(c), mpc_imagref(c));
-      if (m_stepped != m_r_exray_in_step(ray)) {
+      if (m_stepped != m_r_exray_in_step(ray, 8)) {
         retval = 1;
         break;
       }

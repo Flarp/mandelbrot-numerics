@@ -92,7 +92,7 @@ static void m_r_exray_in_bump_prec(m_r_exray_in *ray) {
   mpfr_sqr(ray->epsilon256, ray->epsilon256, MPFR_RNDN);
 }
 
-extern m_newton m_r_exray_in_step(m_r_exray_in *ray) {
+extern m_newton m_r_exray_in_step(m_r_exray_in *ray, int maxsteps) {
   if (ray->j >= ray->sharpness) {
     mpq_mul_2exp(ray->angle, ray->angle, 1);
     if (mpq_cmp_ui(ray->angle, 1, 1) >= 0) {
@@ -111,7 +111,7 @@ restart:
   mpc_set_d_d(ray->target, r * cos(a), r * sin(a), MPC_RNDNN);
   // c = c0;
   mpc_set(ray->c, ray->c0, MPC_RNDNN);
-  for (int i = 0; i < 64; ++i) { // FIXME arbitrary limit
+  for (int i = 0; i < maxsteps; ++i) {
     // z = 0; dc = 0;
     mpc_set_si(ray->z, 0, MPC_RNDNN);
     mpc_set_si(ray->dc, 0, MPC_RNDNN);

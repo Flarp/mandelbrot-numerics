@@ -70,9 +70,9 @@ struct m_d_exray_in;
 typedef struct m_d_exray_in m_d_exray_in;
 extern m_d_exray_in *m_d_exray_in_new(const mpq_t angle, int sharpness);
 extern void m_d_exray_in_delete(m_d_exray_in *ray);
-extern m_newton m_d_exray_in_step(m_d_exray_in *ray);
+extern m_newton m_d_exray_in_step(m_d_exray_in *ray, int maxsteps);
 extern double _Complex m_d_exray_in_get(const m_d_exray_in *ray);
-extern double _Complex m_d_exray_in_do(const mpq_t angle, int sharpness, int maxsteps);
+extern double _Complex m_d_exray_in_do(const mpq_t angle, int sharpness, int maxsteps, int maxnewtonsteps);
 
 struct m_d_exray_out;
 typedef struct m_d_exray_out m_d_exray_out;
@@ -118,7 +118,7 @@ struct m_r_exray_in;
 typedef struct m_r_exray_in m_r_exray_in;
 extern m_r_exray_in *m_r_exray_in_new(const mpq_t angle, int sharpness);
 extern void m_r_exray_in_delete(m_r_exray_in *ray);
-extern m_newton m_r_exray_in_step(m_r_exray_in *ray);
+extern m_newton m_r_exray_in_step(m_r_exray_in *ray, int maxsteps);
 extern void m_r_exray_in_get(const m_r_exray_in *ray, mpc_t c);
 
 /*
