@@ -65,6 +65,8 @@ extern bool m_d_interior_de(double *de_out, double _Complex *dz_out, double _Com
 extern double _Complex m_d_size(double _Complex nucleus, int period);
 extern double m_d_domain_size(double _Complex nucleus, int period);
 extern m_shape m_d_shape(double _Complex nucleus, int period);
+extern double _Complex m_d_shape_estimate(double _Complex nucleus, int period);
+extern m_shape m_d_shape_discriminant(double _Complex shape);
 
 struct m_d_exray_in;
 typedef struct m_d_exray_in m_d_exray_in;
@@ -113,6 +115,8 @@ extern int m_r_parent(mpq_t angle_out, mpc_t root_out, mpc_t parent_out, const m
 extern void m_r_size(mpc_t size, const mpc_t nucleus, int period);
 extern int m_r_domain_size(mpfr_t size, const mpc_t nucleus, int period);
 extern m_shape m_r_shape(const mpc_t nucleus, int period);
+extern void m_r_shape_estimate(mpc_t shape, const mpc_t nucleus, int period);
+extern m_shape m_r_shape_discriminant(const mpc_t shape);
 
 struct m_r_exray_in;
 typedef struct m_r_exray_in m_r_exray_in;

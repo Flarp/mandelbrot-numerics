@@ -1,7 +1,7 @@
 #include <mandelbrot-numerics.h>
 #include "m_d_util.h"
 
-extern m_shape m_d_shape(double _Complex nucleus, int period) {
+extern double _Complex m_d_shape_estimate(double _Complex nucleus, int period) {
   double _Complex z = nucleus;
   double _Complex dc = 1;
   double _Complex dz = 1;
@@ -14,10 +14,18 @@ extern m_shape m_d_shape(double _Complex nucleus, int period) {
     dz = 2 * z * dz;
     z = z * z + nucleus;
   }
-  double _Complex e = - (dcdc / (2 * dc) + dcdz / dz) / (dc * dz);
-  if (cabs2(e) < cabs2(e - 1)) {
+  double _Complex shape = - (dcdc / (2 * dc) + dcdz / dz) / (dc * dz);
+  return shape;
+}
+
+extern m_shape m_d_shape_discriminant(double _Complex shape) {
+  if (cabs(shape) < cabs(shape - 1)) {
     return m_cardioid;
   } else {
     return m_circle;
   }
+}
+
+extern m_shape m_d_shape(double _Complex nucleus, int period) {
+  return m_d_shape_discriminant(m_d_shape_estimate(nucleus, period));
 }
