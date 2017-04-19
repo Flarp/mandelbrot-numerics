@@ -14,6 +14,8 @@ c/bin/m-parent
 c/bin/m-shape
 c/bin/m-size
 c/bin/m-wucleus
+c/bin/m-circles
+c/bin/m-fibonacci-phi
 .cabal-sandbox
 cabal.sandbox.config
 dist
