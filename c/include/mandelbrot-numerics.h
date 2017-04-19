@@ -10,6 +10,11 @@
 #include <mpfr.h>
 #include <mpc.h>
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 /* functions returning bool return true for success, false for failure */
 
 struct m_d_mat2 {
@@ -144,5 +149,9 @@ extern bool m_r_box_period_step(m_r_box_period *box);
 extern bool m_r_box_period_have_period(const m_r_box_period *box);
 extern int m_r_box_period_get_period(const m_r_box_period *box);
 extern int m_r_box_period_do(const mpc_t center, const mpfr_t radius, int maxperiod);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
