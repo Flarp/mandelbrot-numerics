@@ -1,5 +1,5 @@
-COMPILE := gcc -std=c99 -Wall -Wextra -pedantic -fPIC -O3 -pipe -ggdb -MMD -I../include -c
-LINK    := gcc -shared -ggdb
+COMPILE := emcc -std=c99 -fPIC -O3 -pipe -MMD -I../include -I/usr/local/include -c
+LINK    := emcc -shared 
 LIBRARY := libmandelbrot-numerics
 OBJECTS := $(patsubst %.c,%.o,$(wildcard *.c))
 DEPENDS := $(patsubst %.o,%.d,$(OBJECTS))
